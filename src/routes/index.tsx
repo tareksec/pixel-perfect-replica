@@ -237,8 +237,8 @@ function ZoneSheet({ zone, onClose, onOpen }: { zone: ZoneId | null; onClose: ()
   return (
     <Drawer.Root open={zone !== null} onOpenChange={(o) => !o && onClose()}>
       <Drawer.Portal>
-        <Drawer.Overlay className="fixed inset-0 z-40 bg-primary/20 backdrop-blur-[3px]" />
-        <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-[430px] rounded-t-3xl bg-card px-5 pt-3 pb-6 outline-none" lang={undefined}>
+        <Drawer.Overlay className="fixed inset-0 z-40 bg-primary/20 backdrop-blur-[2px]" />
+        <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-[430px] rounded-t-3xl bg-card px-5 pt-3 pb-6 outline-none">
           <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border" />
           <div className="flex items-center justify-between gap-3">
             <Drawer.Title className="flex items-center gap-2 text-lg font-bold">
