@@ -4,10 +4,11 @@ import { Drawer } from "vaul";
 import {
   Activity, ArrowRight, Landmark, Network, Pencil, ShieldCheck, Truck, Monitor, User,
 } from "lucide-react";
-import { businesses, fundedPercent } from "@/data/mock";
+import { fundedPercent } from "@/data/mock";
 import { useApp, type TKey } from "@/lib/app-state";
 import { StatusBadge, type Tone } from "@/components/StatusBadge";
 import { PreviewFooter } from "@/components/PreviewFooter";
+import { BusinessPills } from "@/components/BusinessPills";
 import { cn } from "@/lib/utils";
 import investmentImg from "@/assets/zones/investment.webp";
 import supplyImg from "@/assets/zones/supply.webp";
@@ -57,7 +58,7 @@ function useZones() {
 }
 
 function Home() {
-  const { t, tx, lang, setLang, businessId, setBusinessId, business: b } = useApp();
+  const { t, lang, setLang, business: b } = useApp();
   const navigate = useNavigate();
   const zones = useZones();
   const [open, setOpen] = useState<ZoneId | null>(null);
@@ -102,28 +103,7 @@ function Home() {
         </div>
       </header>
 
-      {/* Business switcher */}
-      <div className="no-scrollbar -mx-5 mt-5 flex gap-2 overflow-x-auto px-5 pb-1">
-        {businesses.map((biz) => {
-          const active = biz.id === businessId;
-          return (
-            <button
-              key={biz.id}
-              onClick={() => setBusinessId(biz.id)}
-              aria-pressed={active}
-              className={cn(
-                "relative shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition-colors",
-                active ? "border-primary bg-primary text-primary-foreground" : "bg-card text-foreground",
-              )}
-            >
-              {tx(biz.name)}
-              {biz.approvals.length > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 size-2.5 rounded-full border-2 border-background bg-bad" aria-label={t("pendingDot")} />
-              )}
-            </button>
-          );
-        })}
-      </div>
+      <BusinessPills className="mt-5" />
 
       <div className="mt-6 flex items-baseline justify-between">
         <h2 className="text-[15px] font-semibold">{t("glance")}</h2>
