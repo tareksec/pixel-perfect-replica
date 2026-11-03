@@ -28,6 +28,9 @@ type Ctx = {
   money: (n: number) => string;
   tx: (x: Text) => string;
   business: Business;
+  businesses: Business[];
+  resolveApproval: (id: string) => void;
+  setSiteOnline: (businessId: string, online: boolean) => void;
   businessId: string;
   setBusinessId: (id: string) => void;
 };
@@ -37,7 +40,14 @@ const AppCtx = createContext<Ctx | null>(null);
 export function AppProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>("en");
   const [businessId, setBusinessId] = useState(businesses[0]!.id);
+  const [resolved, setResolved] = useState<Set<string>>(() => new Set());
+  const [siteOverride, setSiteOverride] = useState<Record<string, boolean>>({});
   const value = useMemo<Ctx>(() => {
+    const merged = businesses.map((b) => ({
+      ...b,
+      approvals: b.approvals.filter((a) => !resolved.has(`${b.id}:${a.id}`)),
+      website: { ...b.website, online: siteOverride[b.id] ?? b.website.online },
+    }));
     const num = (n: number) => toLangDigits(groupLakh(n), lang);
     return {
       lang,
@@ -52,11 +62,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
             s = s.replace(`{${vk}}`, typeof vv === "number" ? num(vv) : vv);
         return s;
       },
-      business: businesses.find((b) => b.id === businessId) ?? businesses[0]!,
+      business: merged.find((b) => b.id === businessId) ?? merged[0]!,
+      businesses: merged,
+      resolveApproval: (id) => setResolved((r) => new Set(r).add(id)),
+      setSiteOnline: (bid, online) => setSiteOverride((o) => ({ ...o, [bid]: online })),
       businessId,
       setBusinessId,
     };
-  }, [lang, businessId]);
+  }, [lang, businessId, resolved, siteOverride]);
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;
 }
 

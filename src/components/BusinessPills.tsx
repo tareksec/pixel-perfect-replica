@@ -1,9 +1,8 @@
-import { businesses } from "@/data/mock";
 import { useApp } from "@/lib/app-state";
 import { cn } from "@/lib/utils";
 
 export function BusinessPills({ className }: { className?: string }) {
-  const { t, tx, businessId, setBusinessId } = useApp();
+  const { t, tx, businessId, setBusinessId, businesses } = useApp();
   return (
     <div className={cn("no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 pt-1 pb-1", className)}>
       {businesses.map((biz) => {
