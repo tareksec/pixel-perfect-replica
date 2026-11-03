@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Drawer } from "vaul";
 import { ArrowLeft, CheckCircle2, Delete, Info, Minus, Plus, RotateCcw } from "lucide-react";
 import { vault, type PayoutBatch, type ProjectStatus, type Split } from "@/data/mock";
@@ -310,7 +310,7 @@ function ApproveSheet({ batch, onClose, onApproved }: { batch: PayoutBatch | nul
   );
 }
 
-function PinKey({ children, onClick, label }: { children: React.ReactNode; onClick: () => void; label?: string }) {
+function PinKey({ children, onClick, label }: { children: ReactNode; onClick: () => void; label?: string }) {
   return (
     <button onClick={onClick} aria-label={label} className="h-12 rounded-xl bg-muted text-lg font-semibold transition-colors active:bg-border">
       {children}
