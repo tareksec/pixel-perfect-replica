@@ -9,7 +9,7 @@ const dicts: Record<Lang, Record<TKey, string>> = { en, bn };
 
 const BN_DIGITS = "০১২৩৪৫৬৭৮৯";
 export const toLangDigits = (s: string, lang: Lang) =>
-  lang === "bn" ? s.replace(/[0-9]/g, (d) => BN_DIGITS[Number(d)]) : s;
+  lang === "bn" ? s.replace(/[0-9]/g, (d) => BN_DIGITS[Number(d)] ?? d) : s;
 
 /** Lakh grouping: 1250000 -> 12,50,000 */
 export const groupLakh = (n: number) => {
@@ -36,7 +36,7 @@ const AppCtx = createContext<Ctx | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>("en");
-  const [businessId, setBusinessId] = useState(businesses[0].id);
+  const [businessId, setBusinessId] = useState(businesses[0]!.id);
   const value = useMemo<Ctx>(() => {
     const num = (n: number) => toLangDigits(groupLakh(n), lang);
     return {
@@ -52,7 +52,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             s = s.replace(`{${vk}}`, typeof vv === "number" ? num(vv) : vv);
         return s;
       },
-      business: businesses.find((b) => b.id === businessId) ?? businesses[0],
+      business: businesses.find((b) => b.id === businessId) ?? businesses[0]!,
       businessId,
       setBusinessId,
     };
